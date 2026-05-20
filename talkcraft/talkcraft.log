@@ -1,0 +1,14 @@
+16:52:22 | INFO     | talkcraft.server | ==================================================
+16:52:22 | INFO     | talkcraft.server | TalkCraft API Server
+16:52:22 | INFO     | talkcraft.server | ==================================================
+16:52:22 | INFO     | talkcraft.server | API:       http://localhost:8000
+16:52:22 | INFO     | talkcraft.server | WebSocket: ws://localhost:8000/ws
+16:52:22 | INFO     | talkcraft.server | Frontend:  http://localhost:3000
+16:52:22 | INFO     | talkcraft.server | Docs:      http://localhost:8000/docs
+16:52:22 | INFO     | talkcraft.server | Broadcast loop started
+16:52:22 | INFO     | talkcraft.server | WebSocket client connected
+16:52:22 | INFO     | talkcraft.server | WebSocket client connected
+16:52:24 | INFO     | talkcraft.server | WebSocket client connected
+16:52:24 | INFO     | talkcraft.server | WebSocket client connected
+16:52:42 | INFO     | talkcraft.server | WebSocket client connected
+16:52:44 | INFO     | talkcraft.server | WebSocket client connected

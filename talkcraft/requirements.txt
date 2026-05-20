@@ -1,0 +1,32 @@
+# TalkCraft - Real-Time Communication Coach
+# Python 3.11+ required
+
+# Audio capture (microphone)
+sounddevice>=0.4.6
+
+# Audio file loading (WAV, FLAC, OGG)
+soundfile>=0.12.1
+
+# Audio file loading (MP3, M4A, AAC — requires ffmpeg)
+pydub>=0.25.1
+
+# Resampling
+scipy>=1.11.0
+
+# Speech-to-text
+faster-whisper>=1.0.0
+
+# Grammar checking (optional, falls back to regex)
+language-tool-python>=2.7.1
+
+# API server
+fastapi>=0.110.0
+uvicorn>=0.27.0
+python-multipart>=0.0.9
+
+# Core dependencies
+numpy>=1.24.0
+
+# Additional requirements
+setuptools>=68.0.0
+wheel>=0.41.0

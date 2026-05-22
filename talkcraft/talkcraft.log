@@ -12,3 +12,73 @@
 16:52:24 | INFO     | talkcraft.server | WebSocket client connected
 16:52:42 | INFO     | talkcraft.server | WebSocket client connected
 16:52:44 | INFO     | talkcraft.server | WebSocket client connected
+16:26:49 | INFO     | talkcraft.server | ==================================================
+16:26:49 | INFO     | talkcraft.server | TalkCraft API Server
+16:26:49 | INFO     | talkcraft.server | ==================================================
+16:26:49 | INFO     | talkcraft.server | API:       http://localhost:8000
+16:26:49 | INFO     | talkcraft.server | WebSocket: ws://localhost:8000/ws
+16:26:49 | INFO     | talkcraft.server | Frontend:  http://localhost:3000
+16:26:49 | INFO     | talkcraft.server | Docs:      http://localhost:8000/docs
+16:26:50 | INFO     | talkcraft.server | Broadcast loop started
+16:27:31 | INFO     | talkcraft.server | WebSocket client connected
+16:27:32 | INFO     | talkcraft.server | WebSocket client connected
+16:30:09 | INFO     | talkcraft.server | WebSocket client connected
+16:30:11 | INFO     | talkcraft.server | WebSocket client connected
+16:30:12 | INFO     | talkcraft.server | WebSocket client connected
+17:33:31 | INFO     | talkcraft.server | WebSocket client connected
+17:33:31 | INFO     | talkcraft.server | WebSocket client connected
+17:34:46 | INFO     | talkcraft.server | WebSocket client connected
+17:34:47 | INFO     | talkcraft.server | WebSocket client connected
+17:42:31 | INFO     | talkcraft.server | WebSocket client connected
+17:42:33 | INFO     | talkcraft.server | WebSocket client connected
+17:42:50 | INFO     | talkcraft.server | WebSocket client connected
+17:42:52 | INFO     | talkcraft.server | WebSocket client connected
+17:43:00 | INFO     | talkcraft.server | WebSocket client connected
+17:43:02 | INFO     | talkcraft.server | WebSocket client connected
+17:43:32 | INFO     | talkcraft.server | WebSocket client connected
+17:43:53 | INFO     | talkcraft.server | WebSocket client connected
+17:43:55 | INFO     | talkcraft.server | WebSocket client connected
+17:44:22 | INFO     | talkcraft.server | WebSocket client connected
+17:44:24 | INFO     | talkcraft.server | WebSocket client connected
+17:44:38 | INFO     | talkcraft.server | WebSocket client connected
+17:44:40 | INFO     | talkcraft.server | WebSocket client connected
+15:20:10 | INFO     | talkcraft.server | ==================================================
+15:20:10 | INFO     | talkcraft.server | TalkCraft API Server
+15:20:10 | INFO     | talkcraft.server | ==================================================
+15:20:10 | INFO     | talkcraft.server | API:       http://localhost:8000
+15:20:10 | INFO     | talkcraft.server | WebSocket: ws://localhost:8000/ws
+15:20:10 | INFO     | talkcraft.server | Frontend:  http://localhost:3000
+15:20:10 | INFO     | talkcraft.server | Docs:      http://localhost:8000/docs
+15:20:10 | INFO     | talkcraft.server | Broadcast loop started
+15:20:11 | INFO     | talkcraft.server | WebSocket client connected
+15:20:12 | INFO     | talkcraft.server | WebSocket client connected
+15:25:52 | INFO     | talkcraft.server | WebSocket client connected
+15:25:53 | INFO     | talkcraft.server | WebSocket client connected
+15:36:37 | INFO     | talkcraft.server | WebSocket client connected
+15:36:38 | INFO     | talkcraft.server | WebSocket client connected
+15:43:51 | INFO     | talkcraft.server | ==================================================
+15:43:51 | INFO     | talkcraft.server | TalkCraft API Server
+15:43:51 | INFO     | talkcraft.server | ==================================================
+15:43:51 | INFO     | talkcraft.server | API:       http://localhost:8000
+15:43:51 | INFO     | talkcraft.server | WebSocket: ws://localhost:8000/ws
+15:43:51 | INFO     | talkcraft.server | Frontend:  http://localhost:3000
+15:43:51 | INFO     | talkcraft.server | Docs:      http://localhost:8000/docs
+15:43:51 | INFO     | talkcraft.server | Broadcast loop started
+15:43:51 | INFO     | talkcraft.server | WebSocket client connected
+15:43:52 | INFO     | talkcraft.server | WebSocket client connected
+16:14:49 | INFO     | talkcraft.server | WebSocket client connected
+16:14:49 | INFO     | talkcraft.server | WebSocket client connected
+16:15:57 | INFO     | talkcraft.server | WebSocket client connected
+16:15:58 | INFO     | talkcraft.server | WebSocket client connected
+16:42:50 | INFO     | talkcraft.server | ==================================================
+16:42:50 | INFO     | talkcraft.server | TalkCraft API Server
+16:42:50 | INFO     | talkcraft.server | ==================================================
+16:42:50 | INFO     | talkcraft.server | API:       http://localhost:8000
+16:42:50 | INFO     | talkcraft.server | WebSocket: ws://localhost:8000/ws
+16:42:50 | INFO     | talkcraft.server | Frontend:  http://localhost:3000
+16:42:50 | INFO     | talkcraft.server | Docs:      http://localhost:8000/docs
+16:42:50 | INFO     | talkcraft.server | Broadcast loop ready
+16:43:43 | INFO     | talkcraft.server | WebSocket client connected
+16:43:47 | INFO     | talkcraft.server | WebSocket client connected
+16:43:48 | INFO     | talkcraft.server | WebSocket client connected
+16:43:53 | INFO     | talkcraft.server | WebSocket client connected

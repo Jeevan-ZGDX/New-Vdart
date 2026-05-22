@@ -1,4 +1,5 @@
 import numpy as np
+import subprocess
 from pathlib import Path
 from typing import Optional, Iterator, Tuple
 
@@ -6,6 +7,23 @@ from talkcraft.utils.logger import get_logger
 
 
 SUPPORTED_EXTENSIONS = {'.wav', '.mp3', '.flac', '.ogg', '.m4a', '.aac', '.wma'}
+
+_FFMPEG_AVAILABLE: Optional[bool] = None
+
+
+def _check_ffmpeg() -> bool:
+    global _FFMPEG_AVAILABLE
+    if _FFMPEG_AVAILABLE is not None:
+        return _FFMPEG_AVAILABLE
+    try:
+        result = subprocess.run(
+            ["ffmpeg", "-version"],
+            capture_output=True, text=True, timeout=3
+        )
+        _FFMPEG_AVAILABLE = result.returncode == 0
+    except Exception:
+        _FFMPEG_AVAILABLE = False
+    return _FFMPEG_AVAILABLE
 
 
 class AudioFileLoader:
@@ -51,7 +69,7 @@ class AudioFileLoader:
                 self._logger.debug(f"soundfile failed for {ext}: {e}")
                 data = None
 
-        if data is None and ext == '.mp3' and self._has_pydub:
+        if data is None and self._has_pydub:
             try:
                 from pydub import AudioSegment
                 audio = AudioSegment.from_file(str(path))
@@ -65,10 +83,17 @@ class AudioFileLoader:
                 data = None
 
         if data is None:
+            needs_ffmpeg = ext in ('.mp3', '.m4a', '.aac', '.wma') and not _check_ffmpeg()
+            if needs_ffmpeg:
+                raise RuntimeError(
+                    f"Cannot load {path.name} (format: {ext}). "
+                    f"ffmpeg is required for {ext} files. "
+                    f"Install: winget install ffmpeg  or download from https://ffmpeg.org"
+                )
             raise RuntimeError(
-                f"Cannot load {path.name}. "
-                f"Install soundfile (pip install soundfile) for WAV/FLAC/OGG, "
-                f"or pydub (pip install pydub) for MP3 (requires ffmpeg)."
+                f"Cannot load {path.name} (format: {ext}). "
+                f"Install pydub and soundfile: pip install pydub soundfile; "
+                f"also install ffmpeg (https://ffmpeg.org) for audio support."
             )
 
         if data.ndim > 1:

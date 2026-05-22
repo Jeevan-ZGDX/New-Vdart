@@ -1,0 +1,21 @@
+Terminal 1 — Phase 1: Speech Analysis
+cd talkcraft
+python server.py
+Listens on ws://localhost:8000
+
+Terminal 2 — Phase 2: Vision Analysis
+cd talkcraft-backend
+python server.py
+Listens on ws://localhost:8765
+
+Terminal 3 — Phase 3: AI Conversation Intelligence
+cd talkcraft_ai
+python main.py console   # for terminal mode
+# OR
+python main.py server    # for API server on port 8002
+Make sure Ollama is running (ollama serve) or configure your LLM API in config.json.
+
+Terminal 4 — Frontend: React/Next.js
+cd talkcraft-frontend
+npm run dev
+Opens at http://localhost:3000

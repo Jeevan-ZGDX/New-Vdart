@@ -40,3 +40,38 @@
 15:25:06 | server | INFO | Starting server on 0.0.0.0:8002
 15:25:06 | server | INFO | Server broadcast loop started
 15:25:06 | server | INFO | FastAPI server started
+17:37:09 | pipeline | INFO | Pipeline stopped
+17:37:09 | server | INFO | Server stopped
+14:51:45 | main | INFO | Starting TalkCraft AI Server (Phase 3)
+14:51:51 | llm_client | INFO | LLMClient initialized
+14:51:52 | tts_engine | INFO | TTS engine initialized
+14:51:52 | conversation_scorer | INFO | ConversationScorer initialized
+14:51:52 | pipeline | INFO | ConversationPipeline initialized
+14:51:52 | server | INFO | TalkCraft AI Server initialized
+14:51:52 | server | INFO | Starting server on 0.0.0.0:8002
+14:51:53 | server | INFO | Server broadcast loop started
+14:51:53 | server | INFO | FastAPI server started
+15:05:19 | main | INFO | Starting TalkCraft AI Server (Phase 3)
+15:05:31 | llm_client | INFO | LLMClient initialized
+15:05:32 | tts_engine | INFO | TTS engine initialized
+15:05:32 | conversation_scorer | INFO | ConversationScorer initialized
+15:05:32 | pipeline | INFO | ConversationPipeline initialized
+15:05:32 | server | INFO | TalkCraft AI Server initialized
+15:05:32 | server | INFO | Starting server on 0.0.0.0:8002
+15:05:32 | server | INFO | Server broadcast loop started
+15:05:32 | server | INFO | FastAPI server started
+15:05:32 | pipeline | INFO | Pipeline stopped
+15:05:32 | server | INFO | Server stopped
+15:09:10 | pipeline | INFO | Pipeline stopped
+15:09:10 | server | INFO | Server stopped
+14:40:32 | main | INFO | Starting TalkCraft AI Server (Phase 3)
+14:40:35 | llm_client | INFO | LLMClient initialized
+14:40:35 | tts_engine | WARNING | pyttsx3 not installed, TTS disabled
+14:40:35 | conversation_scorer | INFO | ConversationScorer initialized
+14:40:35 | pipeline | INFO | ConversationPipeline initialized
+14:40:35 | server | INFO | TalkCraft AI Server initialized
+14:40:35 | server | INFO | Starting server on 0.0.0.0:8002
+14:40:36 | server | INFO | Server broadcast loop started
+14:40:36 | server | INFO | FastAPI server started
+15:16:55 | pipeline | INFO | Pipeline stopped
+15:16:55 | server | INFO | Server stopped

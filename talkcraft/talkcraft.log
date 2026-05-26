@@ -82,3 +82,34 @@
 16:43:47 | INFO     | talkcraft.server | WebSocket client connected
 16:43:48 | INFO     | talkcraft.server | WebSocket client connected
 16:43:53 | INFO     | talkcraft.server | WebSocket client connected
+14:52:52 | INFO     | talkcraft.server | ==================================================
+14:52:52 | INFO     | talkcraft.server | TalkCraft API Server
+14:52:52 | INFO     | talkcraft.server | ==================================================
+14:52:52 | INFO     | talkcraft.server | API:       http://localhost:8000
+14:52:52 | INFO     | talkcraft.server | WebSocket: ws://localhost:8000/ws
+14:52:52 | INFO     | talkcraft.server | Frontend:  http://localhost:3000
+14:52:52 | INFO     | talkcraft.server | Docs:      http://localhost:8000/docs
+14:52:52 | WARNING  | talkcraft.server | ffmpeg NOT detected. MP3/M4A/AAC/WMA files will not load. Install from https://ffmpeg.org or run: winget install ffmpeg
+14:52:52 | INFO     | talkcraft.server | Broadcast loop ready
+14:55:06 | INFO     | talkcraft.server | WebSocket client connected
+14:55:12 | INFO     | talkcraft.server | WebSocket client connected
+14:41:10 | INFO     | talkcraft.server | ==================================================
+14:41:10 | INFO     | talkcraft.server | TalkCraft API Server
+14:41:10 | INFO     | talkcraft.server | ==================================================
+14:41:10 | INFO     | talkcraft.server | API:       http://localhost:8000
+14:41:10 | INFO     | talkcraft.server | WebSocket: ws://localhost:8000/ws
+14:41:10 | INFO     | talkcraft.server | Frontend:  http://localhost:3000
+14:41:10 | INFO     | talkcraft.server | Docs:      http://localhost:8000/docs
+14:41:11 | WARNING  | talkcraft.server | ffmpeg NOT detected. MP3/M4A/AAC/WMA files will not load. Install from https://ffmpeg.org or run: winget install ffmpeg
+14:41:11 | INFO     | talkcraft.server | Broadcast loop ready
+14:42:16 | INFO     | talkcraft.server | WebSocket client connected
+14:42:21 | INFO     | talkcraft.server | WebSocket client connected
+14:42:30 | INFO     | talkcraft.server | WebSocket client connected
+14:42:37 | INFO     | talkcraft.server | WebSocket client connected
+15:10:58 | INFO     | talkcraft.server | WebSocket client connected
+15:11:03 | INFO     | talkcraft.server | WebSocket client connected
+15:11:11 | INFO     | talkcraft.server | WebSocket client connected
+15:11:13 | INFO     | talkcraft.server | WebSocket client connected
+15:12:18 | INFO     | talkcraft.server | WebSocket client connected
+15:12:25 | INFO     | talkcraft.server | WebSocket client connected
+15:12:32 | INFO     | talkcraft.server | WebSocket client connected

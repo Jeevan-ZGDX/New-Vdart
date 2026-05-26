@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: talkcraft_enterprise
+Version: 5.0.0
+Requires-Python: >=3.10
+Requires-Dist: fastapi>=0.110.0
+Requires-Dist: uvicorn>=0.29.0
+Requires-Dist: sqlalchemy>=2.0.30
+Requires-Dist: pyjwt>=2.8.0
+Requires-Dist: pydantic>=2.7.0
+Requires-Dist: pydantic[email]>=2.7.0
+Dynamic: requires-dist
+Dynamic: requires-python

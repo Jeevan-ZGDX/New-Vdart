@@ -1,0 +1,26 @@
+2026-05-26 15:23:27 | talkcraft_coach.database | INFO | Database tables created/verified
+2026-05-26 15:44:18 | talkcraft_coach.database | INFO | Database tables created/verified
+2026-05-26 15:44:18 | talkcraft_coach.server | INFO | TalkCraft Coach Server initialized
+2026-05-26 15:44:18 | talkcraft_coach.server | INFO | Starting coach server on 0.0.0.0:8004
+2026-05-26 15:44:18 | talkcraft_coach.server | INFO | Coach server broadcast loop started
+2026-05-26 15:44:18 | talkcraft_coach.server | INFO | FastAPI server started
+2026-05-26 15:45:05 | talkcraft_coach.server | DEBUG | Coach WebSocket client connected (1 total)
+2026-05-26 15:45:05 | talkcraft_coach.server | DEBUG | Coach WebSocket client connected (2 total)
+2026-05-26 15:45:06 | talkcraft_coach.server | DEBUG | Coach WebSocket client disconnected (1 total)
+2026-05-26 15:45:06 | talkcraft_coach.server | DEBUG | Coach WebSocket client disconnected (0 total)
+2026-05-26 15:45:07 | talkcraft_coach.server | DEBUG | Coach WebSocket client connected (1 total)
+2026-05-26 15:45:08 | talkcraft_coach.server | DEBUG | Coach WebSocket client connected (2 total)
+2026-05-26 15:45:09 | talkcraft_coach.server | DEBUG | Coach WebSocket client disconnected (1 total)
+2026-05-26 15:45:10 | talkcraft_coach.server | DEBUG | Coach WebSocket client connected (2 total)
+2026-05-26 15:46:00 | talkcraft_coach.server | DEBUG | Coach WebSocket client connected (3 total)
+2026-05-26 15:46:01 | talkcraft_coach.server | DEBUG | Coach WebSocket client connected (4 total)
+2026-05-26 15:46:09 | talkcraft_coach.server | DEBUG | Coach WebSocket client disconnected (3 total)
+2026-05-26 15:46:10 | talkcraft_coach.server | DEBUG | Coach WebSocket client connected (4 total)
+2026-05-26 15:46:11 | talkcraft_coach.server | DEBUG | Coach WebSocket client connected (5 total)
+2026-05-26 15:46:13 | talkcraft_coach.server | DEBUG | Coach WebSocket client connected (6 total)
+2026-05-26 15:46:15 | talkcraft_coach.server | DEBUG | Coach WebSocket client disconnected (5 total)
+2026-05-26 15:46:15 | talkcraft_coach.server | DEBUG | Coach WebSocket client disconnected (4 total)
+2026-05-26 15:46:15 | talkcraft_coach.server | DEBUG | Coach WebSocket client disconnected (3 total)
+2026-05-26 15:46:15 | talkcraft_coach.server | DEBUG | Coach WebSocket client disconnected (2 total)
+2026-05-26 15:46:15 | talkcraft_coach.server | DEBUG | Coach WebSocket client disconnected (1 total)
+2026-05-26 15:46:15 | talkcraft_coach.server | DEBUG | Coach WebSocket client disconnected (0 total)

@@ -1,0 +1,6 @@
+2026-05-26 15:59:03 | talkcraft_enterprise.database | INFO | Database tables created/verified
+2026-05-26 16:00:17 | talkcraft_enterprise.database | INFO | Database tables created/verified
+2026-05-26 16:00:17 | talkcraft_enterprise.server | INFO | TalkCraft Enterprise Server initialized
+2026-05-26 16:00:17 | talkcraft_enterprise.server | INFO | Starting enterprise server on 0.0.0.0:8005
+2026-05-26 16:00:17 | talkcraft_enterprise.server | INFO | Enterprise server broadcast loop started
+2026-05-26 16:00:17 | talkcraft_enterprise.server | INFO | FastAPI enterprise server started

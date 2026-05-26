@@ -43,6 +43,12 @@ class TalkCraftAIServer:
             "feedback": [],
             "status": "idle",
             "session_summary": {},
+            "coaching_integration": {
+                "enabled": False,
+                "coach_url": "http://localhost:8004",
+                "user_id": None,
+                "last_sync": None,
+            },
         }
         self._setup_pipeline_callbacks()
         logger.info("TalkCraft AI Server initialized")
@@ -95,6 +101,26 @@ class TalkCraftAIServer:
     def _on_mode_change(self, mode_id: str) -> None:
         self._shared_state["mode"] = mode_id
 
+    def _sync_to_coach(self, session_data: Dict) -> None:
+        coach_url = self._shared_state["coaching_integration"]["coach_url"]
+        try:
+            import httpx
+            with httpx.Client(timeout=5) as client:
+                response = client.post(
+                    f"{coach_url}/api/sync/session",
+                    json=session_data,
+                )
+                if response.status_code == 200:
+                    result = response.json()
+                    self._shared_state["coaching_integration"]["last_sync"] = time.time()
+                    logger.info(f"Session synced to coach server: {result.get('session_id')}")
+                else:
+                    logger.warning(f"Coach sync returned {response.status_code}")
+        except ImportError:
+            logger.debug("httpx not installed, skipping coach sync")
+        except Exception as e:
+            logger.debug(f"Coach sync failed: {e}")
+
     def start(self) -> None:
         if self._running:
             return
@@ -121,6 +147,31 @@ class TalkCraftAIServer:
                         client.send_text(data), self._loop
                     )
             time.sleep(config.dashboard.refresh_interval_ms / 1000.0)
+
+    def _get_session_data_for_coach(self) -> Dict:
+        scores = self._shared_state.get("scores", {})
+        transcript = self._shared_state.get("transcript", [])
+        transcript_text = "\n".join(
+            f"{t['role']}: {t['content']}" for t in transcript[-20:]
+        )
+        return {
+            "session_type": "conversation",
+            "mode": self._shared_state.get("mode", ""),
+            "topic": self._shared_state.get("topic", ""),
+            "difficulty": self._shared_state.get("difficulty", "intermediate"),
+            "duration_seconds": sum(
+                s.get("duration_seconds", 0) for s in transcript
+            ),
+            "overall_score": scores.get("overall", 0),
+            "filler_rate": scores.get("filler", 0),
+            "grammar_error_count": scores.get("grammar_errors", 0),
+            "average_wpm": scores.get("wpm", 0),
+            "confidence_score": scores.get("confidence", 0),
+            "engagement_score": scores.get("engagement", 0),
+            "clarity_score": scores.get("clarity", 0),
+            "transcript_text": transcript_text,
+            "ai_summary": json.dumps(self._shared_state.get("session_summary", {})),
+        }
 
     def create_app(self) -> FastAPI:
         app = FastAPI(title="TalkCraft AI", version="3.0.0")
@@ -188,6 +239,12 @@ class TalkCraftAIServer:
             self._pipeline.stop()
             self._shared_state["session_summary"] = summary
             self._shared_state["status"] = "idle"
+
+            if self._shared_state["coaching_integration"]["enabled"]:
+                session_data = self._get_session_data_for_coach()
+                session_data["user_id"] = self._shared_state["coaching_integration"]["user_id"]
+                self._sync_to_coach(session_data)
+
             return {"status": "stopped", "summary": summary}
 
         @app.post("/send")
@@ -196,6 +253,29 @@ class TalkCraftAIServer:
                 return {"status": "not_running"}
             self._pipeline.receive_transcription(text)
             return {"status": "queued"}
+
+        @app.post("/coaching/enable")
+        async def enable_coaching(user_id: int = None):
+            self._shared_state["coaching_integration"]["enabled"] = True
+            self._shared_state["coaching_integration"]["user_id"] = user_id
+            return {
+                "status": "coaching_enabled",
+                "user_id": user_id,
+                "coach_url": self._shared_state["coaching_integration"]["coach_url"],
+            }
+
+        @app.post("/coaching/disable")
+        async def disable_coaching():
+            self._shared_state["coaching_integration"]["enabled"] = False
+            self._shared_state["coaching_integration"]["user_id"] = None
+            return {"status": "coaching_disabled"}
+
+        @app.get("/coaching/difficulty")
+        async def get_coaching_difficulty():
+            return {
+                "current_difficulty": self._shared_state.get("difficulty", "intermediate"),
+                "mode": self._shared_state.get("mode", ""),
+            }
 
         @app.websocket("/ws")
         async def websocket_endpoint(ws: WebSocket):
@@ -220,6 +300,12 @@ class TalkCraftAIServer:
                         self._engine.set_mode(msg.get("mode", "casual_conversation"), msg.get("topic", ""))
                     elif action == "get_state":
                         await ws.send_text(json.dumps(self._shared_state, default=str))
+                    elif action == "enable_coaching":
+                        user_id = msg.get("user_id")
+                        self._shared_state["coaching_integration"]["enabled"] = True
+                        self._shared_state["coaching_integration"]["user_id"] = user_id
+                    elif action == "disable_coaching":
+                        self._shared_state["coaching_integration"]["enabled"] = False
             except WebSocketDisconnect:
                 pass
             except Exception as e:

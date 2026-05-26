@@ -5,8 +5,11 @@ import TranscriptionBox from "@/components/TranscriptionBox";
 import FeedbackPanel from "@/components/FeedbackPanel";
 import StatusBar from "@/components/StatusBar";
 import WebcamView from "@/components/WebcamView";
+import CoachingPanel from "@/components/CoachingPanel";
+import AchievementCard from "@/components/AchievementCard";
 import { connectWebSocket } from "@/utils/websocket";
-import { getState } from "@/utils/api";
+import { getState, getDashboardOverview, getSummary, getAchievements, getWeaknesses, getCoachingFocus } from "@/utils/api";
+import { useAuth } from "./_app";
 
 const defaultState = {
   transcription_text: "",
@@ -34,6 +37,13 @@ const defaultState = {
   confidence_score: 0,
   confidence_level: "moderate",
   face_detected: false,
+  coaching_data: null,
+  achievements_data: null,
+  summary_data: null,
+  weaknesses_data: null,
+  coaching_focus: null,
+  showCoaching: false,
+  activeTab: "live",
 };
 
 function paceColor(status) {
@@ -67,7 +77,9 @@ function gazeColor(direction) {
 
 export default function Dashboard() {
   const [state, setState] = useState(defaultState);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const wsRef = useRef(null);
+  const { user, isAuthenticated, logoutUser } = useAuth();
 
   useEffect(() => {
     getState()
@@ -75,7 +87,7 @@ export default function Dashboard() {
       .catch(() => {});
 
     wsRef.current = connectWebSocket((data) => {
-      if (data.type === "multimodal_update") {
+      if (data.source === "vision" || data.type === "multimodal_update") {
         setState((prev) => ({
           ...prev,
           face_detected: data.face_detected ?? prev.face_detected,
@@ -118,94 +130,134 @@ export default function Dashboard() {
     };
   }, []);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      getDashboardOverview().then((data) => {
+        if (data && data.summary) setState((prev) => ({ ...prev, summary_data: data.summary }));
+        if (data && data.weaknesses) setState((prev) => ({ ...prev, weaknesses_data: data.weaknesses }));
+        if (data && data.coaching_focus) setState((prev) => ({ ...prev, coaching_focus: data.coaching_focus }));
+        if (data && data.achievements) setState((prev) => ({ ...prev, achievements_data: data.achievements }));
+        if (data && data.daily_recommendations) setState((prev) => ({ ...prev, recommendations: data.daily_recommendations }));
+      }).catch(() => {});
+    }
+  }, [isAuthenticated]);
+
   const handleModeChange = useCallback((mode) => {
     setState((prev) => ({ ...prev, input_mode: mode }));
   }, []);
 
   return (
     <div className="flex min-h-screen bg-black text-white">
-      <Sidebar onModeChange={handleModeChange} />
+      <div className={`${sidebarCollapsed ? 'w-16' : ''} transition-all duration-300`}>
+        <Sidebar onModeChange={handleModeChange} />
+        {isAuthenticated && (
+          <div className="px-4 py-2 border-t border-border">
+            <button
+              onClick={() => setState((prev) => ({ ...prev, showCoaching: !prev.showCoaching }))}
+              className={`w-full px-3 py-2 text-sm rounded transition-colors ${
+                state.showCoaching ? 'bg-accent text-black' : 'text-text-secondary hover:text-white'
+              }`}
+            >
+              {state.showCoaching ? '◀ Live View' : '📊 Coach'}
+            </button>
+          </div>
+        )}
+      </div>
 
       <main className="flex-1 p-6 overflow-y-auto">
-        <h2 className="text-xl font-semibold mb-4">Speech Analysis</h2>
-        <div className="grid grid-cols-4 gap-4 mb-6">
-          <MetricCard
-            label="Speaking Pace"
-            value={state.current_wpm.toFixed(0)}
-            unit="WPM"
-            color={paceColor(state.pace_status)}
-            sub={`avg: ${state.average_wpm.toFixed(0)}`}
-          />
-          <MetricCard
-            label="Filler Words"
-            value={state.filler_count}
-            unit={`Rate: ${state.filler_rate.toFixed(1)}%`}
-            color={rateColor(state.filler_rate)}
-          />
-          <MetricCard
-            label="Grammar Issues"
-            value={state.grammar_errors}
-            unit="detected"
-            color={errorColor(state.grammar_errors)}
-          />
-          <MetricCard
-            label="Session"
-            value={state.total_words}
-            unit="words spoken"
-            color="#4CAF50"
-          />
-        </div>
+        {!isAuthenticated && (
+          <div className="mb-4 p-4 bg-surface rounded-lg border border-border">
+            <p className="text-text-secondary">
+              <a href="/login" className="text-accent hover:underline">Login</a> or{" "}
+              <a href="/login" className="text-accent hover:underline">Register</a> to enable personalized coaching,
+              progress tracking, and achievements.
+            </p>
+          </div>
+        )}
 
-        <h2 className="text-xl font-semibold mb-4">Communication Presence</h2>
-        <div className="grid grid-cols-4 gap-4 mb-6">
-          <MetricCard
-            label="Eye Contact"
-            value={`${(state.eye_contact_score * 100).toFixed(0)}%`}
-            unit={`Gaze: ${state.gaze_direction}`}
-            color={gazeColor(state.gaze_direction)}
-          />
-          <MetricCard
-            label="Posture"
-            value={`${(state.posture_stability * 100).toFixed(0)}%`}
-            unit={`P:${state.head_pitch.toFixed(0)}° Y:${state.head_yaw.toFixed(0)}° R:${state.head_roll.toFixed(0)}°`}
-            color={state.posture_stability > 0.7 ? "#4CAF50" : "#f44336"}
-          />
-          <MetricCard
-            label="Hand Activity"
-            value={`${(state.hand_activity * 100).toFixed(0)}%`}
-            unit={`Hands: ${state.hands_detected}`}
-            color={state.hand_activity > 0.2 && state.hand_activity < 0.6 ? "#4CAF50" : "#FF9800"}
-          />
-          <MetricCard
-            label="Confidence"
-            value={`${(state.confidence_score * 100).toFixed(0)}%`}
-            unit={state.confidence_level.replace('_', ' ')}
-            color={confidenceColor(state.confidence_level)}
-          />
-        </div>
-
-        <hr className="border-border mb-6" />
-
-        <div className="grid grid-cols-2 gap-6">
+        {state.showCoaching && isAuthenticated ? (
           <div>
-            <WebcamView isRunning={state.is_recording} />
-            <div className="mt-4">
-              <TranscriptionBox
-                text={state.transcription_text}
-                history={state.transcription_history}
-                isRecording={state.is_recording}
-                inputMode={state.input_mode}
-              />
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold">Personal Coaching Dashboard</h2>
+              <button
+                onClick={() => setState((prev) => ({ ...prev, activeTab: prev.activeTab === 'overview' ? 'live' : 'overview' }))}
+                className="px-4 py-2 text-sm bg-surface border border-border rounded hover:bg-border transition-colors"
+              >
+                {state.activeTab === 'overview' ? '◀ Back to Live' : '📊 Overview'}
+              </button>
+            </div>
+
+            {state.activeTab === 'overview' ? (
+              <div className="space-y-6">
+                <CoachingPanel
+                  summary={state.summary_data}
+                  weaknesses={state.weaknesses_data}
+                  coachingFocus={state.coaching_focus}
+                  recommendations={state.recommendations}
+                />
+                <div className="grid grid-cols-2 gap-6">
+                  <AchievementCard achievements={state.achievements_data} />
+                </div>
+              </div>
+            ) : (
+              <div>
+                <div className="grid grid-cols-4 gap-4 mb-6">
+                  <MetricCard label="Speaking Pace" value={state.current_wpm.toFixed(0)} unit="WPM" color={paceColor(state.pace_status)} sub={`avg: ${state.average_wpm.toFixed(0)}`} />
+                  <MetricCard label="Filler Words" value={state.filler_count} unit={`Rate: ${state.filler_rate.toFixed(1)}%`} color={rateColor(state.filler_rate)} />
+                  <MetricCard label="Grammar Issues" value={state.grammar_errors} unit="detected" color={errorColor(state.grammar_errors)} />
+                  <MetricCard label="Session" value={state.total_words} unit="words spoken" color="#4CAF50" />
+                </div>
+                <div className="grid grid-cols-4 gap-4 mb-6">
+                  <MetricCard label="Eye Contact" value={`${(state.eye_contact_score * 100).toFixed(0)}%`} unit={`Gaze: ${state.gaze_direction}`} color={gazeColor(state.gaze_direction)} />
+                  <MetricCard label="Posture" value={`${(state.posture_stability * 100).toFixed(0)}%`} unit={`P:${state.head_pitch.toFixed(0)}° Y:${state.head_yaw.toFixed(0)}° R:${state.head_roll.toFixed(0)}°`} color={state.posture_stability > 0.7 ? "#4CAF50" : "#f44336"} />
+                  <MetricCard label="Hand Activity" value={`${(state.hand_activity * 100).toFixed(0)}%`} unit={`Hands: ${state.hands_detected}`} color={state.hand_activity > 0.2 && state.hand_activity < 0.6 ? "#4CAF50" : "#FF9800"} />
+                  <MetricCard label="Confidence" value={`${(state.confidence_score * 100).toFixed(0)}%`} unit={state.confidence_level.replace('_', ' ')} color={confidenceColor(state.confidence_level)} />
+                </div>
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <WebcamView isRunning={state.is_recording} />
+                    <div className="mt-4">
+                      <TranscriptionBox text={state.transcription_text} history={state.transcription_history} isRecording={state.is_recording} inputMode={state.input_mode} />
+                    </div>
+                  </div>
+                  <FeedbackPanel messages={state.feedback_messages} />
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Speech Analysis</h2>
+            <div className="grid grid-cols-4 gap-4 mb-6">
+              <MetricCard label="Speaking Pace" value={state.current_wpm.toFixed(0)} unit="WPM" color={paceColor(state.pace_status)} sub={`avg: ${state.average_wpm.toFixed(0)}`} />
+              <MetricCard label="Filler Words" value={state.filler_count} unit={`Rate: ${state.filler_rate.toFixed(1)}%`} color={rateColor(state.filler_rate)} />
+              <MetricCard label="Grammar Issues" value={state.grammar_errors} unit="detected" color={errorColor(state.grammar_errors)} />
+              <MetricCard label="Session" value={state.total_words} unit="words spoken" color="#4CAF50" />
+            </div>
+
+            <h2 className="text-xl font-semibold mb-4">Communication Presence</h2>
+            <div className="grid grid-cols-4 gap-4 mb-6">
+              <MetricCard label="Eye Contact" value={`${(state.eye_contact_score * 100).toFixed(0)}%`} unit={`Gaze: ${state.gaze_direction}`} color={gazeColor(state.gaze_direction)} />
+              <MetricCard label="Posture" value={`${(state.posture_stability * 100).toFixed(0)}%`} unit={`P:${state.head_pitch.toFixed(0)}° Y:${state.head_yaw.toFixed(0)}° R:${state.head_roll.toFixed(0)}°`} color={state.posture_stability > 0.7 ? "#4CAF50" : "#f44336"} />
+              <MetricCard label="Hand Activity" value={`${(state.hand_activity * 100).toFixed(0)}%`} unit={`Hands: ${state.hands_detected}`} color={state.hand_activity > 0.2 && state.hand_activity < 0.6 ? "#4CAF50" : "#FF9800"} />
+              <MetricCard label="Confidence" value={`${(state.confidence_score * 100).toFixed(0)}%`} unit={state.confidence_level.replace('_', ' ')} color={confidenceColor(state.confidence_level)} />
+            </div>
+
+            <hr className="border-border mb-6" />
+
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <WebcamView isRunning={state.is_recording} />
+                <div className="mt-4">
+                  <TranscriptionBox text={state.transcription_text} history={state.transcription_history} isRecording={state.is_recording} inputMode={state.input_mode} />
+                </div>
+              </div>
+              <FeedbackPanel messages={state.feedback_messages} />
             </div>
           </div>
-          <FeedbackPanel messages={state.feedback_messages} />
-        </div>
+        )}
 
-        <StatusBar
-          isRecording={state.is_recording}
-          inputMode={state.input_mode}
-          sessionDuration={state.session_duration}
-        />
+        <StatusBar isRecording={state.is_recording} inputMode={state.input_mode} sessionDuration={state.session_duration} />
       </main>
     </div>
   );
